@@ -1,0 +1,13 @@
+<html>
+<body>
+    {% if book_list %}
+    <ul>
+    {% for book in book_list %}
+        <li><p><a href="/book/{{ book.id }}/"> {{ book.name }}</a>   </p></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Россия осталась без книг.</p>
+{% endif %}
+</body>
+</html>
