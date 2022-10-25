@@ -31,7 +31,7 @@ def index(request):
             author = Author.objects.get(name=current_request_name, current_request_surname=surname)
             book = Book.objects.create(name=bname, text=text, author=author)
             print(bname)
-            print(book.name)
+            print(book.book_name)
             print(book.id)
         return redirect('/')
 
@@ -51,9 +51,9 @@ def delete_author(request, pk):
     authoreq = get_object_or_404(Author, pk=pk)  
     if request.method == 'POST':         
         authoreq.delete()
-        book_list = Book.objects.order_by('-name')
+        book_list = Book.objects.order_by('-book_name')
         for i in book_list:
-            if i.author == authoreq
+            if i.author == authoreq:
                 i.delete()
         return redirect('/')
 

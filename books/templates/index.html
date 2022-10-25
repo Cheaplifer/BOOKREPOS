@@ -1,13 +1,31 @@
 <html>
+<head>
+</head>
 <body>
     {% if book_list %}
-    <ul>
+    <ul class="list-group">
     {% for book in book_list %}
-        <li><p><a href="/books/{{ book.id }}/"> {{ book.book_name }}</a></p></li>
+    <ul class="list-group list-group-horizontal">
+        <li class="list-group-item"><a href="/book/{{book.id}}"> {{ book.book_name }}</a> </li>
+        <li class="list-group-item">{{ book.book_author.Author_name }} </li>
+        <li class="list-group-item"><form action="{% url 'books:delete_book' book.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Удалить книгу">
+        </form></li>
+        <li class="list-group-item"><form action="{% url 'books:delete_author' book.book_author.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Удалить автора">
+        </form></li>
+    </ul>
     {% endfor %}
     </ul>
-{% else %}
-    <p>Россия осталась без книг.</p>
-{% endif %}
+    <input type="text" name="surname" class="form-control" placeholder="Введите фамилию:"/><br>
+    <label>Книга:</label>
+    <input type="text" name="bname" class="form-control" placeholder="Введите название:" /><br>
+    <input type="text" name="text" class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder="Введите текст:" /><br>
+    <input type="submit"  class="btn btn-primary" value="Сохранить">
+    {% else %}
+    <p>No books are available.</p>
+    {% endif %}
 </body>
 </html>
