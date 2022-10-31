@@ -2,7 +2,6 @@ import datetime
 from django.db import models
 from django.utils import timezone
 
-
 class Author(models.Model):
     Author_name = models.CharField(max_length = 20)
     def __str__(self):

@@ -4,7 +4,8 @@ from django.core.paginator import Paginator
 from django.views.generic.edit import CreateView
 from django.template import loader
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Book, Author
+from .models import Book, author
+
 
 def index(request):
     if request.method == 'GET':
@@ -60,3 +61,35 @@ def delete_author(request, pk):
     return render(request, 'index.html', {'author': authoreq})
 
 
+def login_page(request):
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            return redirect('/index')
+        return render(request, 'LOGIN.html')
+    if request.method == 'POST':
+        username = request.POST.get('login', '')
+        password = request.POST.get('password', '')
+        perm = request.POST.get('sel', '')
+
+        if username == '' or password == '':
+            return redirect('/')
+
+        user = authenticate(username=username, password=password)
+        content_type = ContentType.objects.get_for_model(Book)
+        permission = Permission.objects.create(
+            codename=perm,
+            name='',
+            content_type=content_type,
+        )
+        user.user_permissions.add(permission)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/index')
+        else:
+            return redirect('/')
+
+def logout_page(request):
+    if request.method == 'POST':
+        logout(request)
+    return redirect('/')
